@@ -56,10 +56,10 @@
 
 <style>
     .wrapper {
-        margin: 2rem;
-        padding: 2rem;
+        margin: 2rem min(2rem, 3vw);
+        padding: min(2rem, 3vw);
         background: rgb(235, 235, 235);
-        border-radius: 3rem;
+        border-radius: min(3rem, 5vw);
 
         box-shadow: 0.5rem 1rem 1rem rgba(255, 255, 255, 0.2);
     }

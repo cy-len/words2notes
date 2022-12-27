@@ -43,7 +43,8 @@
         display: block;
         margin: auto;
         font-size: 1.5rem;
-        width: 50%;
+        width: 100%;
+        max-width: 800px;
     }
     
     main {

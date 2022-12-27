@@ -19,7 +19,7 @@
     }
 </script>
 
-<div class="wrapper">
+<div class="wrapper" style="--notes-count: {notes.length}">
     <div class="lines">
         <div class="line" style="--line-number: 1"></div>
         <div class="line" style="--line-number: 2"></div>
@@ -55,7 +55,7 @@
 
     .line {
         position: absolute;
-        width: 100%;
+        width: max(100%, calc(calc(var(--notes-count, 0) * var(--note-width)) + 5rem));
         border-top: 1px solid rgba(0, 0, 0, 0.9);
         top: calc(var(--line-number, 1) * var(--line-height));
     }
