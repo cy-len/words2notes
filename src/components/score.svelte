@@ -77,7 +77,7 @@
         height: 1rem;
         margin-right: 0.25rem;
         font-size: 1.5rem;
-        margin-top: -0.7rem;
+        margin-top: -0.9rem;
         font-weight: bold;
     }
 

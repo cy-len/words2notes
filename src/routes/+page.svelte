@@ -3,6 +3,7 @@
     import { naiveEnglishSolmization } from "../tools/words2notes/algorithms/englishSolmization";
     import { naiveGermanSolmization } from "../tools/words2notes/algorithms/germanSolmization";
     import { expandedSacher } from "../tools/words2notes/algorithms/expandedSacher";
+    import { frenchSynesthesia } from "../tools/words2notes/algorithms/frenchSynesthesia";
     import type { TranscriptionAlgorithm } from "src/tools/words2notes/algorithms/algoTypes";
     import Transcription from "../components/transcription.svelte";
 
@@ -12,7 +13,8 @@
         naiveMod,
         naiveEnglishSolmization,
         naiveGermanSolmization,
-        expandedSacher
+        expandedSacher,
+        frenchSynesthesia,
     ];
 </script>
 

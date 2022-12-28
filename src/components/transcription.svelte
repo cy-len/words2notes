@@ -6,9 +6,9 @@
     export let algorithm: TranscriptionAlgorithm;
     export let input: string;
 
-    $: notesWithDiatonic = words2Notes(input, algorithm.algorithm, ScaleType.DIATONIC);
-    $: notesWithChromatic = words2Notes(input, algorithm.algorithm, ScaleType.CHROMATIC);
-    $: notesWithMicrotonal = words2Notes(input, algorithm.algorithm, ScaleType.MICROTONAL);
+    $: notesWithDiatonic = algorithm.algorithm(input, { scaleType: ScaleType.DIATONIC });
+    $: notesWithChromatic = algorithm.algorithm(input, { scaleType: ScaleType.CHROMATIC });
+    $: notesWithMicrotonal = algorithm.algorithm(input, { scaleType: ScaleType.MICROTONAL });
 </script>
 
 <div class="wrapper">

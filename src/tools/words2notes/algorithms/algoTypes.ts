@@ -11,11 +11,12 @@ export interface CharToNoteMappingOptions {
 }
 
 export type CharToNoteMapper = (char: string, options: CharToNoteMappingOptions) => Note;
+export type StringToNotesMapper = (words: string, options: CharToNoteMappingOptions) => Note[];
 
 export type ScaleTypeCompatibilitySet = Record<ScaleType, boolean>;
 
 export interface TranscriptionAlgorithm {
     name: string;
-    algorithm: CharToNoteMapper;
+    algorithm: StringToNotesMapper;
     scaleCompatibility: ScaleTypeCompatibilitySet;
 }

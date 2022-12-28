@@ -2,7 +2,7 @@ import { monoCaseAlphabet, type CharMap } from "../charsSet";
 import { type Scale, type Note, makeSilence, makeNoteFromIndexAlterationPair } from "../notesSet/note";
 import { diatonicScale } from "../notesSet/notesSet";
 import { ScaleType, type CharToNoteMappingOptions, type TranscriptionAlgorithm } from "./algoTypes";
-import { pickNoteFromChar } from "./base";
+import { applyToEachChar, pickNoteFromChar } from "./base";
 
 const englishSolmizationChromaticScale: Scale = [
     makeNoteFromIndexAlterationPair(0), // A
@@ -54,12 +54,14 @@ export const naiveEnglishSolmization: TranscriptionAlgorithm = {
         [ScaleType.MICROTONAL]: false
     },
 
-    algorithm: (char: string, options: CharToNoteMappingOptions): Note => {
-        if (char === " ") return makeSilence();
-    
-        if (options.scaleType === ScaleType.DIATONIC) {
-            return pickNoteFromChar(char, monoCaseAlphabet, diatonicScale);
-        }
-        return pickNoteFromChar(char, monoCaseAlphabet, englishSolmizationChromaticScale);
+    algorithm: (words: string, options: CharToNoteMappingOptions): Note[] => {
+        return applyToEachChar(words, (char: string): Note => {
+            if (char === " ") return makeSilence();
+        
+            if (options.scaleType === ScaleType.DIATONIC) {
+                return pickNoteFromChar(char, monoCaseAlphabet, diatonicScale);
+            }
+            return pickNoteFromChar(char, monoCaseAlphabet, englishSolmizationChromaticScale);
+        });
     }
 }

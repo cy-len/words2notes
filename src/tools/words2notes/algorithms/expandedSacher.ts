@@ -2,7 +2,7 @@ import { monoCaseAlphabet } from "../charsSet";
 import { type Scale, type Note, makeSilence, makeNoteFromIndexAlterationPair } from "../notesSet/note";
 import { diatonicScale } from "../notesSet/notesSet";
 import { ScaleType, type CharToNoteMappingOptions, type TranscriptionAlgorithm } from "./algoTypes";
-import { pickNoteFromChar } from "./base";
+import { applyToEachChar, pickNoteFromChar } from "./base";
 
 const expandedSacherMapper: Scale = [
     makeNoteFromIndexAlterationPair(0), // A
@@ -42,12 +42,14 @@ export const expandedSacher: TranscriptionAlgorithm = {
         [ScaleType.MICROTONAL]: false
     },
 
-    algorithm: (char: string, options: CharToNoteMappingOptions): Note => {
-        if (char === " ") return makeSilence();
-    
-        if (options.scaleType !== ScaleType.CHROMATIC) {
-            return makeSilence();
-        }
-        return pickNoteFromChar(char, monoCaseAlphabet, expandedSacherMapper);
+    algorithm: (words: string, options: CharToNoteMappingOptions): Note[] => {
+        return applyToEachChar(words, (char: string): Note => {
+            if (char === " ") return makeSilence();
+        
+            if (options.scaleType !== ScaleType.CHROMATIC) {
+                return makeSilence();
+            }
+            return pickNoteFromChar(char, monoCaseAlphabet, expandedSacherMapper);
+        });
     }
 }
