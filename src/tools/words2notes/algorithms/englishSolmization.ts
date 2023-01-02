@@ -59,9 +59,13 @@ export const naiveEnglishSolmization: TranscriptionAlgorithm = {
             if (char === " ") return makeSilence();
         
             if (options.scaleType === ScaleType.DIATONIC) {
-                return pickNoteFromChar(char, monoCaseAlphabet, diatonicScale);
+                return pickNoteFromChar(char, monoCaseAlphabet, diatonicScale, {
+                    generatorString: char
+                });
             }
-            return pickNoteFromChar(char, monoCaseAlphabet, englishSolmizationChromaticScale);
+            return pickNoteFromChar(char, monoCaseAlphabet, englishSolmizationChromaticScale, {
+                generatorString: char
+            });
         });
     }
 }

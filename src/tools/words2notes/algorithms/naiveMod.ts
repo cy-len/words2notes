@@ -23,7 +23,9 @@ export const naiveMod: TranscriptionAlgorithm = {
                 noteSet = microtonalChromaticScale;
             }
         
-            return pickNoteFromChar(char, monoCaseAlphabet, noteSet);
+            return pickNoteFromChar(char, monoCaseAlphabet, noteSet, {
+                generatorString: char
+            });
         });
     }
 }

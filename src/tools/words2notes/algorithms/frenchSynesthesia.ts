@@ -1,8 +1,5 @@
-import { monoCaseAlphabet } from "../charsSet";
-import { type Scale, type Note, makeSilence, makeNoteFromIndexAlterationPair } from "../notesSet/note";
-import { diatonicScale } from "../notesSet/notesSet";
+import { type Note, makeSilence, makeNoteFromIndexAlterationPair } from "../notesSet/note";
 import { ScaleType, type CharToNoteMappingOptions, type TranscriptionAlgorithm } from "./algoTypes";
-import { pickNoteFromChar } from "./base";
 
 const frenchSynestheticVowelsCharToNote: { [key: string]: number } = {
     "a": 0, // La
@@ -51,27 +48,31 @@ export const frenchSynesthesia: TranscriptionAlgorithm = {
         [ScaleType.MICROTONAL]: false
     },
 
-    // TODO assumes full string
     algorithm: (words: string, options: CharToNoteMappingOptions): Note[] => {
-        let input = words;
-
         const possibleVowels = Object.keys(frenchSynestheticVowelsCharToNote);
         possibleVowels.sort((a, b) => b.length - a.length); // Sort longest to smallest
 
-        possibleVowels.forEach((vowel) => {
-            input = input.replaceAll(vowel, `${frenchSynestheticVowelsCharToNote[vowel]}`);
-        });
-
         if (options.scaleType === ScaleType.DIATONIC) {
             const diatonicOutput: Note[] = [];
-            for (let i = 0; i < input.length; i++) {
-                const letter = input.charAt(i);
-                if (letter === " ") {
+            let index = 0;
+            while (index < words.length) {
+                if (words.charAt(index) === " ") {
                     diatonicOutput.push(makeSilence());
+                    index++;
                 } else {
-                    const noteId = parseInt(letter);
-                    if (!isNaN(noteId)) {
-                        diatonicOutput.push(makeNoteFromIndexAlterationPair(noteId));
+                    let found = false;
+                    for (const vowel of possibleVowels) {
+                        if (words.indexOf(vowel, index) === index) {
+                            const noteId = frenchSynestheticVowelsCharToNote[vowel];
+                            diatonicOutput.push(makeNoteFromIndexAlterationPair(noteId, 0, vowel));
+    
+                            index += vowel.length;
+                            found = true;
+                        }
+                    }
+    
+                    if (!found) {
+                        index++;
                     }
                 }
             }
@@ -80,18 +81,32 @@ export const frenchSynesthesia: TranscriptionAlgorithm = {
         }
 
         const chromaticOutput: Note[] = [];
-        let nextAlteration = 0;
-        for (let i = 0; i < input.length; i++) {
-            const letter = input.charAt(i);
-            if (letter === " ") {
+        let index = 0;
+        let lastConsonnant = "";
+        while (index < words.length) {
+            if (words.charAt(index) === " ") {
                 chromaticOutput.push(makeSilence());
+                index++;
             } else {
-                const noteId = parseInt(letter);
-                if (!isNaN(noteId)) {
-                    chromaticOutput.push(makeNoteFromIndexAlterationPair(noteId, nextAlteration));
-                    nextAlteration = 0;
-                } else if (letter in frenchSynestheticConsonnantsAlterationModifier) {
-                    nextAlteration = frenchSynestheticConsonnantsAlterationModifier[letter];
+                let found = false;
+                for (const vowel of possibleVowels) {
+                    if (words.indexOf(vowel, index) === index) {
+                        const noteId = frenchSynestheticVowelsCharToNote[vowel];
+                        const alteration = frenchSynestheticConsonnantsAlterationModifier[lastConsonnant];
+                        chromaticOutput.push(makeNoteFromIndexAlterationPair(noteId, alteration, `${lastConsonnant}${vowel}`));
+
+                        index += vowel.length;
+                        found = true;
+                        lastConsonnant = "";
+                    }
+                }
+
+                if (!found) {
+                    const char = words.charAt(index);
+                    if (frenchSynestheticConsonnantsAlterationModifier[char] !== undefined) {
+                        lastConsonnant = char;
+                    }
+                    index++;
                 }
             }
         }

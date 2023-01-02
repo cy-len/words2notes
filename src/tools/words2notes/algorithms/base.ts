@@ -1,9 +1,19 @@
 import type { CharMap } from "../charsSet";
-import type { Note, Scale } from "../notesSet/note";
+import type { Note, NoteMetadata, Scale } from "../notesSet/note";
 
-export function pickNoteFromChar(char: string, charSet: CharMap, noteSet: Scale): Note {
+export function pickNoteFromChar(char: string, charSet: CharMap, noteSet: Scale, customMetadata: NoteMetadata | null = null): Note {
     const rawIndex = charSet[char.toLowerCase()];
-    return noteSet[rawIndex % noteSet.length];
+
+    const pickedNote = noteSet[rawIndex % noteSet.length];
+
+    if (customMetadata) {
+        return {
+            ...pickedNote,
+            metadata: customMetadata
+        }
+    }
+
+    return pickedNote;
 }
 
 export function applyToEachChar(words: string, callback: (char: string) => Note): Note[] {

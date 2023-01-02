@@ -49,7 +49,9 @@ export const expandedSacher: TranscriptionAlgorithm = {
             if (options.scaleType !== ScaleType.CHROMATIC) {
                 return makeSilence();
             }
-            return pickNoteFromChar(char, monoCaseAlphabet, expandedSacherMapper);
+            return pickNoteFromChar(char, monoCaseAlphabet, expandedSacherMapper, {
+                generatorString: char
+            });
         });
     }
 }

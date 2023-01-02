@@ -35,7 +35,9 @@ export const naiveGermanSolmization: TranscriptionAlgorithm = {
             if (options.scaleType !== ScaleType.CHROMATIC) {
                 return makeSilence();
             }
-            return pickNoteFromChar(char, monoCaseAlphabet, germanSolmizationChromaticScale);
+            return pickNoteFromChar(char, monoCaseAlphabet, germanSolmizationChromaticScale, {
+                generatorString: char
+            });
         });
     }
 }

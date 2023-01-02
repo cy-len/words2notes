@@ -37,6 +37,7 @@
                     <div class="head"></div>
                 </div>
             {/if}
+            <div class="metadata" style="--note-position-x: {i}">{ note.metadata.generatorString }</div>
         {/each}
     </div>
 </div>
@@ -45,7 +46,7 @@
     .wrapper {
         position: relative;
         width: 100%;
-        height: 7rem;
+        height: 7.5rem;
         overflow-x: auto;
         background-color: white;
 
@@ -60,7 +61,7 @@
         top: calc(var(--line-number, 1) * var(--line-height));
     }
 
-    .note, .silence {
+    .note, .silence, .metadata {
         position: absolute;
         display: flex;
         justify-content: flex-start;
@@ -94,6 +95,11 @@
         background: black;
 
         top: 0;
+    }
+
+    .metadata {
+        padding-left: 0.25rem;
+        top: 4.25rem;
     }
 
     @keyframes appear {
